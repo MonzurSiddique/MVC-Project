@@ -1,0 +1,181 @@
+﻿@model CarInsuranceFinal.Models.Insuree
+@{
+    ViewBag.Title = "GetQuote";
+}
+
+<script>
+    $(document).ready(function () {
+        $("#DateOfBirth").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0", // Adjust the year range as needed
+            dateFormat: "yy-mm-dd" // Change date format if necessary
+        });
+    });
+</script>
+
+<h2>Get a Quote</h2>
+@if (ViewBag.ErrorMsg != null)
+{
+
+    <div class="row" style="padding-top:20px;">
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @ViewBag.ErrorMsg
+            </div>
+        </div>
+    </div>
+}
+
+
+@using (Html.BeginForm("CalculateQuote", "Insuree", FormMethod.Post))
+{
+    <div class="mb-6">
+        <label for="FirstName" class="form-label">First Name</label>
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", id = "FirstName", name = "FirstName" })
+        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6">
+        <label for="LastName" class="form-label">Last Name</label>
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", id = "LastName", name = "LastName" })
+        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6">
+        <label for="Email" class="form-label">Email Address</label>
+        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", id = "Email", name = "Email" })
+        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6">
+        <label for="Age" class="form-label">Date of Birth</label>
+        @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", id = "DateOfBirth" })
+        @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6">
+        <label for="CarYear" class="control-label">Car Year</label>
+        <select class="form-control" id="CarYear" name="CarYear">
+            <option value="">Select Year</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2017">2017</option>
+            <option value="2016">2016</option>
+            <option value="2015">2015</option>
+            <option value="2014">2014</option>
+            <option value="2013">2013</option>
+            <option value="2012">2012</option>
+            <option value="2011">2011</option>
+        </select>
+        @Html.ValidationMessageFor(model => model.CarYear, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6">
+        <label for="CarMake" class="control-label">Car Make</label>
+
+        <select class="form-control" id="CarMake" name="CarMake">
+            <option value="">Select Car Make</option>
+            <option value="Toyota">Toyota</option>
+            <option value="Honda">Honda</option>
+            <option value="Ford">Ford</option>
+            <option value="Chevrolet">Chevrolet</option>
+            <option value="Nissan">Nissan</option>
+            <option value="Porsche">Porsche</option>
+        </select>
+        @Html.ValidationMessageFor(model => model.CarMake, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="mb-6">
+        <label for="CarModel" class="form-label">Car Model</label>
+        <select class="form-control" id="CarModel" name="CarModel">
+            <option value="">Select Car Model</option>
+            <!-- The options will be populated based on CarMake selection -->
+        </select>
+        @Html.ValidationMessageFor(model => model.CarModel, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6">
+        <label for="SpeedingTickets" class="form-label">Speeding Tickets</label>
+        @Html.TextBoxFor(m => m.SpeedingTickets, new { @class = "form-control", id = "SpeedingTickets" })
+        @Html.ValidationMessageFor(model => model.SpeedingTickets, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6 form-check">
+        @Html.CheckBoxFor(m => m.DUI, new { @class = "form-check-input", id = "DUI" })
+        <label class="form-check-label" for="DUI">Has DUI</label>
+        @Html.ValidationMessageFor(model => model.DUI, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-6 form-check">
+        @Html.CheckBoxFor(m => m.CoverageType, new { @class = "form-check-input", id = "CoverageType" })
+        <label class="form-check-label" for="CoverageType">Full Coverage</label>
+        @Html.ValidationMessageFor(model => model.CoverageType, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Generate Quote</button>
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('#CarMake').change(function () {
+            console.log('carmake')
+            var selectedMake = $(this).val();
+
+            // Clear the CarModel dropdown
+            $('#CarModel').empty();
+            $('#CarModel').append(new Option('Select a model', ''));
+
+            // Populate CarModel based on selected CarMake
+            if (selectedMake === "Toyota") {
+                $('#CarModel').append(new Option('Corolla', 'Corolla'));
+                $('#CarModel').append(new Option('Camry', 'Camry'));
+                $('#CarModel').append(new Option('RAV4', 'RAV4'));
+                $('#CarModel').append(new Option('Highlander', 'Highlander'));
+                $('#CarModel').append(new Option('Prius', 'Prius'));
+
+            } else if (selectedMake === "Honda") {
+                $('#CarModel').append(new Option('Civic', 'Civic'));
+                $('#CarModel').append(new Option('Accord', 'Accord'));
+                $('#CarModel').append(new Option('CR-V', 'CR-V'));
+                $('#CarModel').append(new Option('Pilot', 'Pilot'));
+                $('#CarModel').append(new Option('Fit', 'Fit'));
+            }
+            else if (selectedMake === "Ford") {
+                $('#CarModel').append(new Option('F-150', 'F-150'));
+                $('#CarModel').append(new Option('Mustang', 'Mustang'));
+                $('#CarModel').append(new Option('Explorer', 'Explorer'));
+                $('#CarModel').append(new Option('Escape', 'Escape'));
+                $('#CarModel').append(new Option('Focus', 'Focus'));
+            }
+            else if (selectedMake === "Chevrolet") {
+                $('#CarModel').append(new Option('Silverado', 'Silverado'));
+                $('#CarModel').append(new Option('Malibu', 'Malibu'));
+                $('#CarModel').append(new Option('Equinox', 'Equinox'));
+                $('#CarModel').append(new Option('Camaro', 'Camaro'));
+                $('#CarModel').append(new Option('Tahoe', 'Tahoe'));
+            }
+            else if (selectedMake === "Nissan") {
+                $('#CarModel').append(new Option('Altima', 'Altima'));
+                $('#CarModel').append(new Option('Sentra', 'Sentra'));
+                $('#CarModel').append(new Option('Rogue', 'Rogue'));
+                $('#CarModel').append(new Option('Pathfinder', 'Pathfinder'));
+                $('#CarModel').append(new Option('Leaf', 'Leaf'));
+            }
+            else if (selectedMake === "Porsche") {
+                $('#CarModel').append(new Option('911 Carrera', '911 Carrera'));
+                $('#CarModel').append(new Option('Cayenne', 'Cayenne'));
+                $('#CarModel').append(new Option('Macan', 'Macan'));
+                $('#CarModel').append(new Option('Panamera', 'Panamera'));
+                $('#CarModel').append(new Option('Taycan', 'Taycan'));
+            }
+        });
+    });
+</script>

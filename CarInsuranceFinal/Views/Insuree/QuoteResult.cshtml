@@ -1,0 +1,103 @@
+﻿@model CarInsuranceFinal.Models.Insuree
+@{
+    ViewBag.Title = "Quote Result";
+}
+
+
+<div class="container">
+    @{
+        if (ViewBag.ErrorMsg != null)
+        {
+
+        <div class="row" style="padding-top:20px;">
+            <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        ViewBag.ErrorMsg
+                    </div>
+            </div>
+        </div>
+        }
+    }
+
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="row p-5">
+                        <div class="col-md-6">
+                            <h1>Quote Result</h1>
+                        </div>
+
+                        <div class="col-md-6 text-right">
+                            <p class="font-weight-bold mb-1">Invoice #</p>
+                            <p class="text-muted">@DateTime.Now.ToShortDateString()</p>
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <div class="row pb-5 p-5">
+                        <div class="col-md-6">
+                            <p class="font-weight-bold mb-4">Client Information</p>
+                            <p class="mb-1">Client xyz</p>
+                            <p>Street abc</p>
+                            <p class="mb-1">Xyz City, xyz Country</p>
+                        </div>
+
+                        <div class="col-md-6 text-right">
+                            <p class="font-weight-bold mb-4">Details</p>
+                            <p class="mb-1"><span class="text-muted">Name: </span> @string.Concat(Model.FirstName, " ", Model.LastName)</p>
+                            <p class="mb-1"><span class="text-muted">Email: </span> @Model.EmailAddress</p>
+                            <p class="mb-1"><span class="text-muted">Date of Birth: </span> @Model.DateOfBirth</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:30px;"></div>
+                    <div class="row p-5">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Car Year</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Car Make</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Car Model</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Speeding Tickets</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Has DUI</th>
+                                        <th class="border-0 text-uppercase small font-weight-bold">Full Coverage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.CarYear</td>
+                                        <td>@Model.CarMake</td>
+                                        <td>@Model.CarModel</td>
+                                        <td>@Model.SpeedingTickets</td>
+                                        <td>@(Model.DUI ? "Yes" : "No")</td>
+                                        <td>@(Model.CoverageType ? "Yes" : "No")</td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                        <div class="py-3 px-5 text-right">
+                            <div class="mb-2">Your calculated quote is:</div>
+                            <div class="h2 font-weight-light">@Model.Quote</div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
